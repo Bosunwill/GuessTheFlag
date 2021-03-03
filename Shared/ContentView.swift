@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
     @State private var scoreAnswer = 0
+    @State private var turns = 0
     
     var body: some View{
         ZStack{
@@ -41,19 +42,19 @@ struct ContentView: View {
                     .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 6, y: 9)
             }
         }
-                Text("\(scoreAnswer)")
+                Text("\(scoreAnswer)/\(turns)")
                     .foregroundColor(.green)
                     .font(.largeTitle)
                     .fontWeight(.heavy)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.yellow, lineWidth: 0.5))
+                    //.clipShape(Circle())
+                    //.overlay(Circle().stroke(Color.yellow, lineWidth: 3))
                     .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 6, y: 9)
             Spacer()
         }
         }
         .alert(isPresented: $showingScore) {
             Alert(title: Text("\(scoreTitle)! That is the flag of \(country)"), message:
-                    Text("Your score is \(scoreAnswer)???"), dismissButton: .default(Text("Continue")){
+                    Text("Your score is \(scoreAnswer)/\(turns)???"), dismissButton: .default(Text("Continue")){
                 self.askQuestion()
             })
         }
@@ -63,10 +64,12 @@ struct ContentView: View {
         if number == correctAnswer {
             scoreTitle = "Correct"
             scoreAnswer = scoreAnswer + 1
+            turns = turns + 1
             country = countries[correctAnswer]
         } else {
             scoreTitle = "Wrong"
             country = countries[number]
+            turns = turns + 1
         }
         showingScore = true
     }
